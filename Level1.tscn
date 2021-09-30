@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Swordsman.png" type="Texture" id=1]
+
+[node name="Level1" type="Node2D"]
+
+[node name="Player" type="KinematicBody2D" parent="."]
+position = Vector2( 462.609, 258.093 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="PlayerSprite" type="Sprite" parent="Player"]
+texture = ExtResource( 1 )
+hframes = 4
+vframes = 4
