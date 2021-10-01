@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-onready var sprite = self.get_node("PlayerSprite")
+onready var sprite = self.get_node("Sprite")
 onready var animPlayer = self.get_node("AnimationPlayer")
 
 export var speed = 50
@@ -10,12 +10,12 @@ export var jump_power = 100
 var velocity = Vector2.ZERO
 
 
-
-func _input(event):
+func _input(_event):
 	if Input.is_action_pressed("attack"):
 		animPlayer.play("SideSlash")
 
-func _physics_process(delta):
+
+func _physics_process(_delta):
 	var input_velocity = Vector2.ZERO
 	# Check input for "desired" velocity
 	if Input.is_action_pressed("ui_right"):
@@ -33,10 +33,9 @@ func _physics_process(delta):
 	if input_velocity.length() > 0:
 		velocity = velocity.linear_interpolate(input_velocity, acceleration)
 	else:
-		# If there's no input, slow down to (0, 0)
 		velocity = velocity.linear_interpolate(Vector2.ZERO, friction)
 	velocity = move_and_slide(velocity)
 
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(_anim_name):
 	animPlayer.play("WalkLeft")
