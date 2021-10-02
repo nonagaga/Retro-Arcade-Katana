@@ -3,10 +3,9 @@ extends KinematicBody2D
 onready var sprite = self.get_node("Sprite")
 onready var animPlayer = self.get_node("AnimationPlayer")
 
+export var gravity = 10
 export var speed = 50
-export var friction = 0.5
-export var acceleration = 0.2
-export var jump_power = 100
+export var jump_power = 1000
 var velocity = Vector2.ZERO
 
 
@@ -16,25 +15,23 @@ func _input(_event):
 
 
 func _physics_process(_delta):
-	var input_velocity = Vector2.ZERO
-	# Check input for "desired" velocity
-	if Input.is_action_pressed("ui_right"):
+	var input_vector = Vector2.ZERO
+	input_vector.x = (Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"))
+	
+	if input_vector.x > 0:
 		sprite.set_flip_h(true)
-		input_velocity.x += 1
-	if Input.is_action_pressed("ui_left"):
+		
+	if input_vector.x < 0:
 		sprite.set_flip_h(false)
-		input_velocity.x -= 1
-	input_velocity = input_velocity.normalized() * speed
 	
-	if Input.is_action_pressed("jump"):
-		input_velocity.y = -jump_power
+	input_vector = input_vector.normalized()
+	velocity.x = input_vector.x * speed
 	
-	# If there's input, accelerate to the input velocity
-	if input_velocity.length() > 0:
-		velocity = velocity.linear_interpolate(input_velocity, acceleration)
-	else:
-		velocity = velocity.linear_interpolate(Vector2.ZERO, friction)
-	velocity = move_and_slide(velocity)
+	velocity.y += gravity
+	velocity = move_and_slide(velocity, Vector2(0, -1))
+	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = -jump_power
 
 
 func _on_AnimationPlayer_animation_finished(_anim_name):
