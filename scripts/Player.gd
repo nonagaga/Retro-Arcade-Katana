@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 onready var sprite = self.get_node("Sprite")
-onready var animPlayer = self.get_node("AnimationPlayer")
+onready var anim_player = self.get_node("AnimationPlayer")
 
 export var gravity = 10
 export var speed = 50
@@ -12,12 +12,12 @@ var is_SideSlash_next = true
 
 func _input(_event):
 	if Input.is_action_pressed("attack"):
-		if animPlayer.get_current_animation() == "WalkLeft":
+		if anim_player.get_current_animation() == "WalkLeft":
 			if is_SideSlash_next:
-				animPlayer.play("SideSlash")
+				anim_player.play("SideSlash")
 				is_SideSlash_next = false
 			else:
-				animPlayer.play("TopSlash")
+				anim_player.play("TopSlash")
 				is_SideSlash_next = true
 
 
@@ -42,4 +42,4 @@ func _physics_process(_delta):
 
 
 func _on_AnimationPlayer_animation_finished(_anim_name):
-	animPlayer.play("WalkLeft")
+	anim_player.play("WalkLeft")
