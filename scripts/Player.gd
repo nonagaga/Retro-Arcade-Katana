@@ -5,13 +5,20 @@ onready var animPlayer = self.get_node("AnimationPlayer")
 
 export var gravity = 10
 export var speed = 50
-export var jump_power = 1000
+export var jump_power = 160
 var velocity = Vector2.ZERO
 
+var is_SideSlash_next = true
 
 func _input(_event):
 	if Input.is_action_pressed("attack"):
-		animPlayer.play("SideSlash")
+		if animPlayer.get_current_animation() == "WalkLeft":
+			if is_SideSlash_next:
+				animPlayer.play("SideSlash")
+				is_SideSlash_next = false
+			else:
+				animPlayer.play("TopSlash")
+				is_SideSlash_next = true
 
 
 func _physics_process(_delta):

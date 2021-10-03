@@ -23,7 +23,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=3]
 length = 0.4
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -60,14 +59,13 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
-jump_power = 200
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 flip_h = true
 hframes = 4
 vframes = 4
-frame = 9
+frame = 5
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 1, 2 )
