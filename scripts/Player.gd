@@ -3,9 +3,12 @@ extends KinematicBody2D
 onready var sprite = self.get_node("Sprite")
 onready var anim_player = self.get_node("AnimationPlayer")
 
-export var gravity = 10
-export var speed = 50
-export var jump_power = 160
+export (int) var gravity = 10
+export (int) var speed = 70
+export (int) var jump_power = 160
+export (int) var max_jump_count = 2
+var current_jump_count = 1
+
 var velocity = Vector2.ZERO
 
 var is_SideSlash_next = true
@@ -37,9 +40,16 @@ func _physics_process(_delta):
 	velocity.y += gravity
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = -jump_power
-
+	if is_on_floor():
+		current_jump_count = 0
+	
+	if Input.is_action_just_pressed("jump"):
+		if is_on_floor():
+			velocity.y = -jump_power
+			current_jump_count = 0
+		elif (current_jump_count + 1 < max_jump_count):
+			velocity.y = -jump_power
+			current_jump_count = current_jump_count + 1
 
 func _on_AnimationPlayer_animation_finished(_anim_name):
 	anim_player.play("WalkLeft")
